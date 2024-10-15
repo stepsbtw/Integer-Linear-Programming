@@ -1,60 +1,83 @@
 import numpy as np
-from scipy import linalg
-import sympy as sp
-
-# invert base_coeficients matrix
-# calculate xB , xR and z
-# who enters in the base? max(reduced cost)
-# who leave from base? min(ratio_test)
-# new base! calculate obj function start again.
-
 
 def main():
-    n_restrictions = int(input("How many restrictions in the LP? "))
+    # inputs
+    # -> Min Ax <= b ou Min Ax = b, x >= 0
+    A = np.array([[2,3],[-1,1]])
+    b = np.array([6,1])
+    c = np.array([-1,-3])
+    solucao, objetivo = simplex(A,b,c)
+    print(f"Solucao otima {solucao}")
+    print(f"Valor maximo: {objetivo}")
+
+def simplex(A,b,c):
+    # forma padrao
+    # A(mxn) m -> n restricoes, n -> n variaveis
+    '''
+    m = len(A)
+    n = len(A[0])
+    '''
+    m,n = A.shape
+    A = np.hstack([A,np.eye(m)])
+    #c = np.concat([c,np.zeros(m)])
+    c += [0] * m
+
+    # indices basicos e nao basicos
+    # variaveis de folga sao inicialmente basicas
+    B = list(range(n,n+m))
+    N = list(range(n))
+
+    # SOLUCAO BASICA INICIAL:
+    xB = b[:] # ORIGEM CONSIDERADA VIÁVEL.
+    # (copia)
     
-    cost_vector = input("Enter the costs (objective function), separating by spaces: ").split()
-    cost_vector = np.array([float(x) for x in cost_vector])
-    
-    coeficients_matrix, bias_vector = input_restrictions(n_restrictions)
-    
-    initial_base = input("Enter a starting viable base (only indexes), separating by spaces: ").split()
-    initial_base = np.array([float(x) for x in initial_base])
-    
-    # A*x = b
-    # A = [a1:an]
-    x_values = np.array(0*cost_vector.size)
-    
-    #z = c*x
-    z_value = cost_vector.dot(x_values)
-    
-    # c = cB + cN
-    # x = xB + xN
-    base_idx = []
-    non_base_idx = []
-    
-    # xB = (B^-1)*b
-    # z[j] - c[j] = cB*(B^-1)*a1 - c1
-    # z = cB*xB + cN*xN
-    basic_solution = []
-    reduced_costs = []
-    
-    # who_enter = max(reduced_costs)
-    # ratio_test = xB / B^-1*a[who_enter]
-    # who_leaves = min(ratio_test)
-    who_enter = []
-    ratio_test = []
-    who_leave = []
-    
-def input_restrictions(m):
-    coef = []
-    biases = []
-    for i in range(m):
-        restriction = input("Insert the coeficients from restriction "+(i+1)+", separating it by spaces: \n").split()
-        restriction = [float(x) for x in restriction]
-        coef.append(restriction)
-        bias = float(input("Insert bias from restriction "+(i+1)+": "))
-        biases.append(bias)
-    return np.array(coef), np.array(biases)
-    
+    while True:
+        # INVERTER MATRIZ BASICA AB^-1
+        B_inv = np.linalg.inv(A[:,B]) # colunas das variaveis de folga
+        xB = B_inv.dot(b) # B^-1b
+
+        # quem entra : custos reduzidos
+        
+        # calcular os custos reduzidos das nao basicas xj
+        #r = np.zeros(len(N))
+        r = [0] * len(N)
+        for i, j in enumerate(N):
+            a_j = A[:,j] # coluna coef. da variavel j
+            r[i] = c[j] - B_inv.dot(a_j).dot(c[B])
+            
+        # se forem positivos, ACABOU!
+        if np.min(r) < 0:
+            entra_idx = np.argmin(r)
+        else:
+            solucao = np.zeros(len(c))
+            solucao[B] = xB
+            return solucao[:n], c[B].dot(xB)
+            # solucao otima e valor objetivo
+        
+        entra = N[entra_idx]
+        
+        # quem sai : TESTE DA RAZAO MINIMA
+        # matriz distancia
+        # mostra o quanto cada variavel basica reage a variavel que entra
+        d = B_inv.dot(A[:,entra])
+        razoes = xB/d
+        # sai o que tiver razao positiva menos impactante
+        razoes_positivas = np.where(d>0,razoes,np.inf)
+        # todos valores positivos recebe o valor da razao
+        # todos os valores negativos ou 0 recebem infinito
+        sai_idx = np.argmin(razoes_positivas)
+        
+        sai = B[sai_idx]
+        
+        # ATUALIZAR TUDO!
+        B[sai_idx] = entra
+        N[entra_idx] = sai
+
 if __name__ == "__main__":
     main()
+
+    
+    
+
+
+
