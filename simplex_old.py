@@ -19,8 +19,8 @@ def simplex(A,b,c):
     '''
     m,n = A.shape
     A = np.hstack([A,np.eye(m)])
-    #c = np.concat([c,np.zeros(m)])
-    c += [0] * m
+    c = np.concat([c,np.zeros(m)])
+    #c += [0] * m
 
     # indices basicos e nao basicos
     # variaveis de folga sao inicialmente basicas
