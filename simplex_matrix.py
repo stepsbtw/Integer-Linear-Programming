@@ -15,9 +15,10 @@ def simplex(A, b, c):
     m = len(A)    # numero de restricoes
     n = len(A[0]) # numero de variaveis
     # variaveis de folga com matriz identidade
-    A = np.hstack(A,np.eye(m))
+    A = np.hstack([A,np.eye(m)])
     
-    c += [0] * m  # folga tem custo 0
+    #c += [0] * m  
+    c = np.concat([c,np.zeros(m)]) # folga tem custo 0
 
     # indices basicos e nao basicos
     B = list(range(n, n + m))
@@ -65,7 +66,7 @@ def simplex(A, b, c):
         razoes = []
         for i in range(m):
             if d[i] > 0: 
-                razoes[i] = xB[i] / d[i] 
+                razoes.append(xB[i] / d[i])
             else: 
                 float('inf') # por infinito nas negativas.
                 
