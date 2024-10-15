@@ -42,7 +42,7 @@ def simplex(A, b, c):
         xB = B_inv.dot(b)  # xB = B^-1 * b
 
         # custos reduzidos p cada nao basica
-        r = [0] * len(N)
+        r = np.zeros(len(N)) # r = [0] * len(N)
         for i, j in enumerate(N):
             #a_j = [A[k][j] for k in range(m)]  
             a_j = A[:,j] # coluna especifica da variavel j
@@ -68,7 +68,7 @@ def simplex(A, b, c):
             if d[i] > 0: 
                 razoes.append(xB[i] / d[i])
             else: 
-                float('inf') # por infinito nas negativas.
+                razoes.append(float('inf')) # por infinito nas negativas.
                 
         # quem sai
         sai_idx = razoes.index(min(razoes)) # indice da variavel que tem a razao minima POSITIVA.
