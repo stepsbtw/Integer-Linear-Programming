@@ -4,7 +4,7 @@ A = np.array([[2, 3], [-1, 1]])
 b = np.array([6, 1])
 c = np.array([-1, -3])
 
-# STD FORM
+# std form
 n_constrictions, n_vars = A.shape
 A = np.hstack([A, np.eye(n_constrictions)])
 c = np.concatenate([c, np.zeros(n_constrictions)])
@@ -52,8 +52,8 @@ def simplex(A, b, c, B, N):
         B[leaving_idx] = entering_var
         N[entering_idx] = leaving_var
         
-solution, max_value = simplex(A, b, c, B, N)
+solution, objective = simplex(A, b, c, B, N)
 print(f"Optimal solution: {solution}")
-print(f"Maximum value: {max_value}")
+print(f"Optimal value: {objective}")
 
 
