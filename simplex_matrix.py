@@ -12,8 +12,9 @@ def main():
 
 def simplex(A, b, c):
     # forma padrao
-    m = len(A)    # numero de restricoes
-    n = len(A[0]) # numero de variaveis
+    #m = len(A)    # numero de restricoes
+    #n = len(A[0]) # numero de variaveis
+    m , n = A.shape
     # variaveis de folga com matriz identidade
     A = np.hstack([A,np.eye(m)])
     
@@ -29,8 +30,8 @@ def simplex(A, b, c):
 
     while True:
         # matriz basica
-        A_B = [[A[i][B[j]] for j in range(m)] for i in range(m)]
-        
+        #A_B = [[A[i][B[j]] for j in range(m)] for i in range(m)]
+        A_B = A[:,B]
         '''
         for i in range(m):
             for j in range(m):
@@ -42,21 +43,24 @@ def simplex(A, b, c):
         xB = B_inv.dot(b)  # xB = B^-1 * b
 
         # custos reduzidos p cada nao basica
-        r = np.zeros(len(N)) # r = [0] * len(N)
+        r = [0] * len(N)
         for i, j in enumerate(N):
             #a_j = [A[k][j] for k in range(m)]  
             a_j = A[:,j] # coluna especifica da variavel j
             r[i] = c[j] - B_inv.dot(a_j).dot(c[B])
 
         # ja posso ter a solucao otima
-        if min(r) >= 0:
-            solucao = [0] * len(c)
-            for i in range(m):
-                solucao[B[i]] = xB[i]
+        if np.min(r) >= 0:
+            #solucao = [0] * len(c)
+            solucao = np.zeros(len(c))
+            #for i in range(m):
+                #solucao[B[i]] = xB[i]
+            solucao[B] = xB
             return solucao[:n], c[B].dot(xB)  # SOLUCAO OTIMA e OBJETIVO
 
         # quem entra
-        entra_idx = r.index(min(r)) # o indice da variavel que ao entrar minimiza r.
+        #entra_idx = r.index(min(r)) # o indice da variavel que ao entrar minimiza r.
+        entra_idx = np.argmin(r)
         entra = N[entra_idx]
 
         # calcular direcao (quanto as variaveis basicas reagem a ela.)
@@ -71,7 +75,8 @@ def simplex(A, b, c):
                 razoes.append(float('inf')) # por infinito nas negativas.
                 
         # quem sai
-        sai_idx = razoes.index(min(razoes)) # indice da variavel que tem a razao minima POSITIVA.
+        #sai_idx = razoes.index(min(razoes)) # indice da variavel que tem a razao minima POSITIVA.
+        sai_idx = np.argmin(razoes)
         sai = B[sai_idx]
 
         # atualizar os indices basicos e nao basicos
