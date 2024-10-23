@@ -1,22 +1,22 @@
-# Programação Linear e Inteira - Soluções Clássicas
+# Integer and Linear Programming - Soluções Clássicas
 
-Este repositório é dedicado à implementação dos principais métodos de solução para Programação Linear (PL) e Programação Linear Inteira (PLI).
-A ideia é fornecer implementações eficientes e bem documentadas dos algoritmos mais conhecidos, além de exemplos práticos para cada método.
+This repository is dedicated to implementing the main solution methods for Linear Programming (LP) and Integer Linear Programming (ILP). Using Python and/or Matlab.
+The goal is to provide efficient and well-documented implementations of the most well-known algorithms, along with practical examples for each method.
 
-## 📋 Lista de Tarefas
+## 📋 Task List
 
-### Métodos de Programação Linear (PL):
-- [x] Simplex Primal
-- [x] Simplex Dual
-- [ ] Método de Pontos Interiores
-- [ ] Método de Grandes Penalidades
-- [ ] Método dos Multiplicadores de Lagrange
+### Linear Programming (LP) Methods:
+- [x] Primal Simplex
+- [x] Dual Simplex
+- [ ] Interior Point Method
+- [ ] Penalty Methods
+- [ ] Lagrange Multipliers Method
 
-### Métodos de Programação Linear Inteira (PLI):
-- [ ] Método dos Cortes de Gomory
+### Integer Linear Programming (ILP) Methods:
+- [ ] Gomory Cuts Method
 - [ ] Branch and Bound
 - [ ] Branch and Cut
-- [ ] Método de Planos de Corte
-- [ ] Programação Dinâmica para PLI
-- [ ] Método dos Subgradientes
-- [ ] Relaxação Lagrangiana
+- [ ] Cutting Plane Method
+- [ ] Dynamic Programming for ILP
+- [ ] Subgradient Method
+- [ ] Lagrangian Relaxation
