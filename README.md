@@ -1,4 +1,4 @@
-# Integer and Linear Programming - Soluções Clássicas
+# Integer and Linear Programming - Classic Solutions
 
 This repository is dedicated to implementing the main solution methods for Linear Programming (LP) and Integer Linear Programming (ILP). Using Python and/or Matlab.
 The goal is to provide efficient and well-documented implementations of the most well-known algorithms, along with practical examples for each method.
