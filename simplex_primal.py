@@ -17,6 +17,8 @@ def main():
     print(f"Optimal solution: {solution}")
     print(f"Optimal value: {objective}")
 
+def two_phase(A,b,c,B,N): # determine initial viable solution!
+
 def to_standard_form(A,c,n_constrictions,objective_type="max",inequalities=[-1,-1]):
     if objective_type == "max":
         c = -c  # convert to min
