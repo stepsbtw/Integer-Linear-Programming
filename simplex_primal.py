@@ -13,11 +13,18 @@ def main():
     
     A, c = to_standard_form(A,c,n_constrictions,objective_type,inequalities)  # get rid of inequalities
 
-    solution, objective = simplex(A, b, c, B, N)
+    # solution, objective = simplex(A, b, c, B, N)
+    solution, obhective = two_phase(A,b,c,B,N)
     print(f"Optimal solution: {solution}")
     print(f"Optimal value: {objective}")
 
-def two_phase(A,b,c,B,N): # determine initial viable solution!
+def two_phase(A,b,c,B,N): # determine initial viable 
+    m, n = A.shape
+    A_aux = np.hstack([A, np.eye(m)])  # add artificial vars
+    c_aux = np.hstack([np.zeros(n), np.ones(m)])  # minimize sum of artificials vars
+    B_aux = list(range(n, n + m))
+    N_aux = list(range(n))
+    return simplex(A, b, c, B, N)
 
 def to_standard_form(A,c,n_constrictions,objective_type="max",inequalities=[-1,-1]):
     if objective_type == "max":
