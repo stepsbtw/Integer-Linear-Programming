@@ -1,30 +1,41 @@
 import numpy as np
 
 def main(): 
-    A = np.array([[2, 3], [-1, 1]])
-    b = np.array([6, 1])
-    c = np.array([1, 3])
+    A = np.array([[-1, -2], [-1, 2], [-2,-3], [-1,-1], [-3,-1]]).T
+    c = np.array([2, 3, 5, 2, 3])
+    b = np.array([-4, -3])
     inequalities = [-1,-1]  # 1 = '≥' , -1 = '≤'
-    objective_type = "max"
+    objective_type = "min"
     
-    n_constrictions, n_vars = A.shape
-    B = list(range(n_vars, n_vars + n_constrictions))
-    N = list(range(n_vars + n_constrictions))
+    m, n = A.shape
+    B = list(range(n, n + m))
+    N = list(range(n+ m))
     
-    A, c = to_standard_form(A,c,n_constrictions,objective_type,inequalities)  # get rid of inequalities
+    A, c = to_standard_form(A, c, m, objective_type, inequalities)  # get rid of inequalities
 
     # solution, objective = simplex(A, b, c, B, N)
-    solution, obhective = two_phase(A,b,c,B,N)
+    solution, objective = two_phase(A,b,c,B,N)
     print(f"Optimal solution: {solution}")
     print(f"Optimal value: {objective}")
 
-def two_phase(A,b,c,B,N): # determine initial viable 
+def two_phase(A,b,c,B,N): # determine initial viable solution
     m, n = A.shape
-    A_aux = np.hstack([A, np.eye(m)])  # add artificial vars
-    c_aux = np.hstack([np.zeros(n), np.ones(m)])  # minimize sum of artificials vars
+    
+    # PHASE 1 - add artificial vars and solve aux
+    A_aux = np.hstack([A, np.eye(m)])
+    c_aux = np.hstack([np.zeros(n), np.ones(m)])  # second objective -> minimize sum of artificials vars
     B_aux = list(range(n, n + m))
     N_aux = list(range(n))
-    return simplex(A, b, c, B, N)
+    
+    solution_aux, objective_aux = simplex(A_aux, b, c_aux, B_aux, N_aux)
+    
+    # feasibility: sum of artificials = 0
+    if objective_aux > 0:
+        raise ValueError("The problem is unbounded.")
+    
+    # PHASE 2 - remove artificial vars and solve original
+    A_orig = A_aux[:,:n]
+    return simplex(A_orig, b, c, B, N)
 
 def to_standard_form(A,c,n_constrictions,objective_type="max",inequalities=[-1,-1]):
     if objective_type == "max":
