@@ -1,22 +1,30 @@
 import numpy as np
 
+TOLERANCE = 1e-6
+
 def main(): 
-    A = np.array([[-1, -2], [-1, 2], [-2,-3], [-1,-1], [-3,-1]]).T
+    A = np.array([[-1, -2], [-1, 2], [-2, -3], [-1, -1], [-3, -1]]).T
     c = np.array([2, 3, 5, 2, 3])
     b = np.array([-4, -3])
-    inequalities = [-1,-1]  # 1 = '≥' , -1 = '≤'
+    inequalities = [-1, -1]  # 1 = '≥' , -1 = '≤'
+    objective_type = "min"
+    
+    A = np.array([[1, 2], [1, -2], [2, 3], [1, 1], [3, 1]]).T
+    c = np.array([2, 3, 5, 2, 3])
+    b = np.array([4, 3])
+    inequalities = [1, 1]  # 1 = '≥' , -1 = '≤'
     objective_type = "min"
     
     m, n = A.shape
     B = list(range(n, n + m))
-    N = list(range(n+ m))
+    N = list(range(n))
     
     A, c = to_standard_form(A, c, m, objective_type, inequalities)  # get rid of inequalities
 
     # solution, objective = simplex(A, b, c, B, N)
     solution, objective = two_phase(A,b,c,B,N)
-    print(f"Optimal solution: {solution}")
-    print(f"Optimal value: {objective}")
+    print(f"Optimal solution: {np.round(solution,2)}")
+    print(f"Optimal value: {np.round(objective,2)}")
 
 def two_phase(A,b,c,B,N): # determine initial viable solution
     m, n = A.shape
@@ -30,12 +38,15 @@ def two_phase(A,b,c,B,N): # determine initial viable solution
     solution_aux, objective_aux = simplex(A_aux, b, c_aux, B_aux, N_aux)
     
     # feasibility: sum of artificials = 0
-    if objective_aux > 0:
+    if objective_aux > 1e-8:
         raise ValueError("The problem is unbounded.")
     
     # PHASE 2 - remove artificial vars and solve original
-    A_orig = A_aux[:,:n]
-    return simplex(A_orig, b, c, B, N)
+    A = A_aux[:, :n]
+    B = [b for b in B_aux if b < n]  # Remove variáveis artificiais da base
+    N = [i for i in range(n) if i not in B]
+
+    return simplex(A, b, c, B, N)
 
 def to_standard_form(A,c,n_constrictions,objective_type="max",inequalities=[-1,-1]):
     if objective_type == "max":
@@ -64,11 +75,15 @@ def reduced_costs(c,B,N,A):         # c_N - c_B * B^-1 * A_N
     return r
 
 def choose_entering_variable(r):                  # most negative reduced cost
-    return np.argmin(r) if np.min(r) < 0 else -1  # if all >= 0, optimal
+    return np.argmin(r) if np.min(r) < -TOLERANCE else -1  # if all >= 0, optimal
 
 def choose_leaving_variable(x_B, d): # minimun ratio test
+    print(f"d = {d}")
+    print(f"x_B = {x_B}")
     ratios = x_B / d
     positive_ratios = np.where(d > 0, ratios, np.inf)
+    if np.all(positive_ratios == np.inf):
+        raise ValueError("All ratios are infinite. The problem might be unbounded.")
     return np.argmin(positive_ratios)
 
 def simplex(A, b, c, B, N):
@@ -89,7 +104,6 @@ def simplex(A, b, c, B, N):
 
         d = B_inv.dot(A[:, entering_var])
 
-        
         if np.all(d <= 0):
             raise ValueError("The problem is unbounded.")
         
