@@ -12,3 +12,12 @@
     c = np.array([4, 3])
     inequalities = [-1,-1,-1,-1,-1]  # 1 = '≥' , -1 = '≤'
     objective_type = "max"
+
+
+INTEIRO SEM SOLUCAO LINEAR TRIVIAL
+    A = np.array([[20,15,5,3,7]])
+    b = np.array([50])
+    c = np.array([10,5,3,2,1])
+    inequalities = [-1]
+    objective_type = "max"
+    
