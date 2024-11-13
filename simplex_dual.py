@@ -1,11 +1,18 @@
 import numpy as np
 
 # Define the LP
-A = np.array([[2, 3], [-1, 1]])
-b = np.array([6, 1])
-c = np.array([1, 3])
-objective_type = "max"
+A = np.array([[1, 2], [1, -2], [2, 3], [1, 1], [3, 1]]).T
+c = np.array([2, 3, 5, 2, 3])
+b = np.array([4, 3])
+inequalities = [1, 1]  # 1 = '≥' , -1 = '≤'
+objective_type = "min"
 
+A = np.array([[-1, -2], [-1, 2], [-2, -3], [-1, -1], [-3, -1]]).T
+c = np.array([2, 3, 5, 2, 3])
+b = np.array([-4, -3])
+inequalities = [-1, -1]  # 1 = '≥' , -1 = '≤'
+objective_type = "min"
+    
 if objective_type == "max":
     c = -c # convert to min
 
