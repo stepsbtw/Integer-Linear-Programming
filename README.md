@@ -6,17 +6,14 @@ The goal is to provide efficient and well-documented implementations of the most
 ## 📋 Task List
 
 ### Linear Programming (LP) Methods:
-- [x] Primal Simplex
+- [x] Primal Simplex -> Two Phase [ ]
 - [x] Dual Simplex
-- [ ] Interior Point Method
-- [ ] Penalty Methods
-- [ ] Lagrange Multipliers Method
+- [ ] Interior Points Method
+- [ ] Lagrange Multipliers Method?
 
 ### Integer Linear Programming (ILP) Methods:
-- [ ] Gomory Cuts Method
-- [ ] Branch and Bound
+- [X] Branch and Bound -> Pruning [ ]
+- [ ] Cutting Planes Method -> Gomory Cuts [ ] -> Mixed Integer Rounding Cuts [ ]
 - [ ] Branch and Cut
-- [ ] Cutting Plane Method
-- [ ] Dynamic Programming for ILP
-- [ ] Subgradient Method
-- [ ] Lagrangian Relaxation
+- [ ] Subgradient Method?
+- [ ] Lagrangian Relaxation?
