@@ -1,0 +1,129 @@
+model tsp.mod;
+data "dat/berlin52.dat";
+
+printf "\n========== Testando solver: gurobi ==========\n";
+
+option solver gurobi;
+
+solve;
+
+printf "Solver: gurobi\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+/*
+printf "\nTour encontrado:\n";
+for {i in NODES, j in NODES: i != j} {
+    if (x[i,j] > 0.5) then
+        printf "%s -> %s\n", i, j;
+}
+*/
+
+printf "\n========== Testando solver: xpress ==========\n";
+
+option solver xpress;
+
+solve;
+
+printf "Solver: xpress\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+printf "\n========== Testando solver: cplex ==========\n";
+
+option solver cplex;
+
+solve;
+
+printf "Solver: cplex\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+printf "\n========== Testando solver: copt ==========\n";
+
+option solver copt;
+
+solve;
+
+printf "Solver: copt\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+printf "\n========== Testando solver: mosek ==========\n";
+
+option solver mosek;
+
+solve;
+
+printf "Solver: mosek\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+printf "\n========== Testando solver: highs ==========\n";
+
+option solver highs;
+
+solve;
+
+printf "Solver: highs\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+
+printf "\n========== Testando solver: scip ==========\n";
+
+option solver scip;
+
+solve;
+
+printf "Solver: scip\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+/*
+printf "\n========== Testando solver: gcg ==========\n";
+
+option solver gcg;
+
+solve;
+
+printf "Solver: gcg\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+*/
+/*
+printf "\n========== Testando solver: cbc ==========\n";
+
+option solver cbc;
+
+solve;
+
+printf "Solver: cbc\n";
+printf "Valor objetivo: %f\n", TotalDistance;
+printf "Status: %s\n", solve_result;
+printf "Mensagem do solver: %s\n", solve_message;
+
+display TotalDistance;
+*/
